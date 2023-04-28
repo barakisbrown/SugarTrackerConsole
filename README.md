@@ -1,1 +1,1 @@
-# SugarTrackerConsole
+# Blood Sugar Tracker -- Console Application --
