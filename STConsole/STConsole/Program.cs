@@ -25,18 +25,23 @@ while(option != 0)
         case 0:            
             break;
         case 1:
+            Log.Debug("Displaying all records");
             Menu.ShowAll();
             break;
         case 2:
+            Log.Debug("Adding new records");
             Menu.Add();
             break;
         case 3:
+            Log.Debug("Deleting Records");
             Menu.Delete();
             break;
         case 4:
+            Log.Debug("Updating Records");
             Menu.Update();
             break;
         case 5:
+            Log.Debug("Detailed Report");
             Menu.ShowReport();
             break;
     }
