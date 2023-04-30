@@ -19,7 +19,6 @@ while(option != 0)
     Console.WriteLine("Welcome to Sugar Tracker.  This will help track my blood sugar so I can see how I am doing.");
     Menu.GetMenu();
     option = Menu.GetMenuSelection();
-    Log.Debug("option {option} has been selected",option);
     switch(option)
     {
         case 0:            
