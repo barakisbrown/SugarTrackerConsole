@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using ConsoleTableExt;
+using Serilog;
 using STConsole.DataLayer;
 using STConsole.Model;
 
@@ -6,7 +7,7 @@ namespace STConsole.UserInput;
 
 public class Menu
 {
-    private readonly static string MenuInputString = "Please Select (1-5) OR 0 to exit";
+    private readonly static string MenuInputString = "\tPlease Select (1-5) OR 0 to exit";
 
     public static void GetMenu()
     {
@@ -78,8 +79,42 @@ public class Menu
         Thread.Sleep(1000);
         Console.Clear();
     }
+
     public static void Update() { }
+
     public static void Delete() { }
-    public static void ShowAll() { }
-    public static void ShowReport() { }
+
+    public static void ShowAll() 
+    {
+        Console.Clear();
+        Console.WriteLine("VIEWING ALL BLOOD RESULTS\n");
+
+        ReadingController.DisplayAllRecords();
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return back to the main menu.");
+        Console.ReadKey();
+        Console.Clear();
+    }
+    public static void ShowReport() 
+    {
+        Console.Clear();
+        
+        ReportData reportData = ReadingController.GetReportData();
+        List<ReportData> quickReport = new()
+        {
+            reportData
+        };
+
+        ConsoleTableBuilder.From(quickReport)
+            .WithTitle("Blood Sugar Quick Facts", ConsoleColor.Red, ConsoleColor.Gray)
+            .WithColumn("MIN", "MAX", "AVG", "Over 200")
+            .ExportAndWriteLine();
+
+        Console.WriteLine();
+        ReadingController.DisplayAllRecords();
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return back to the main menu.");
+        Console.ReadKey();
+        Console.Clear();
+    }
 }
