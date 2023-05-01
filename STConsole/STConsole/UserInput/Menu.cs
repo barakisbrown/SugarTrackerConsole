@@ -95,24 +95,33 @@ public class Menu
         Console.ReadKey();
         Console.Clear();
     }
-    public static void ShowReport() 
+    public static void ShowReport()
     {
         Console.Clear();
-        
-        ReportData reportData = ReadingController.GetReportData();
-        List<ReportData> quickReport = new()
+
+        ReportData? reportData = ReadingController.GetReportData();
+
+        if (reportData is null)
+        {
+            Console.WriteLine("No report generated due to no data been added.");
+            Console.WriteLine("Add some data and come back to see report");
+        }
+        else
+        {
+            List<ReportData> quickReport = new()
         {
             reportData
         };
 
-        ConsoleTableBuilder.From(quickReport)
-            .WithTitle("Blood Sugar Quick Facts", ConsoleColor.Red, ConsoleColor.Gray)
-            .WithColumn("MIN", "MAX", "AVG", "Over 200")
-            .ExportAndWriteLine();
+            ConsoleTableBuilder.From(quickReport)
+                .WithTitle("Blood Sugar Quick Facts", ConsoleColor.Red, ConsoleColor.Gray)
+                .WithColumn("MIN", "MAX", "AVG", "Over 200")
+                .ExportAndWriteLine();
 
-        Console.WriteLine();
-        ReadingController.DisplayAllRecords();
-        Console.WriteLine();
+            Console.WriteLine();
+            ReadingController.DisplayAllRecords();
+            Console.WriteLine();           
+        }
         Console.WriteLine("Press any key to return back to the main menu.");
         Console.ReadKey();
         Console.Clear();

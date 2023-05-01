@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using STConsole.DataLayer;
 using STConsole.UserInput;
 
 // Following will make sure that Crtl/C can not be used to exit the application
@@ -12,6 +13,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("app.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 // END LOG SETUP
+// CHECKING IF DATABASE AND TABLES EXIST
+_ = new ReadingController();
 Log.Information("Sugar Tracker Console App Starting up");
 int option = -1;
 while(option != 0)
