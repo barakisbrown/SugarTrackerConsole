@@ -1,11 +1,10 @@
 ﻿namespace STConsole.DataLayer;
 
 using ConsoleTableExt;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 using STConsole.Model;
 using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Serilog;
 
 public class ReadingController
 {
@@ -52,11 +51,41 @@ public class ReadingController
         return _context.SaveChanges() == 1;
     }
 
-    public static Reading Query(int _id)
+    public static bool UpdateAmount(Reading updatedRow)
     {
         using var _context = new ReadingContext();
-        var row = _context.Readings.OrderBy(b => b.Id == _id).First();
-        return row;
+        _context.Readings.Update(updatedRow);
+        return _context.SaveChanges() == 1;
+    }
+
+    public static bool UpateDate(Reading updateReading)
+    {
+        using var _context = new ReadingContext();
+        _context.Readings.Update(updateReading);
+        return _context.SaveChanges() == 1;
+    }
+
+    public static bool Delete(Reading deletedRow)
+    {
+        using var _context = new ReadingContext();
+        _context.Readings.Remove(deletedRow);
+        return _context.SaveChanges() == 1;        
+    }
+
+    public static Reading? Query(int _id)
+    {
+        using var _context = new ReadingContext();
+        try
+        {
+            var row = _context.Readings.Where(b => b.Id == _id).First(); 
+            return row;
+        }
+        catch (Exception)
+        {
+            Log.Error("{id} Supplied does not exist. Returning NULL back to the function",_id);
+            return null;
+        }
+        
     }
 
     public static void DisplayAllRecords()
@@ -91,4 +120,6 @@ public class ReadingController
             return null;
         }        
     }
+
+   
 }
