@@ -9,6 +9,7 @@ using System;
 public class ReadingController
 {
     private readonly string TableName = "Readings";
+
     public ReadingController()
     {
         using var _context = new ReadingContext();
@@ -40,7 +41,7 @@ public class ReadingController
             Log.Error("Database exist but initial table DOES NOT exist.");
             var script = _context.Database.GenerateCreateScript();
             _context.Database.ExecuteSqlRaw(script);
-            Log.Information("Tables are now created");           
+            Log.Information("Tables are now created");
         }
     }
 
@@ -69,7 +70,7 @@ public class ReadingController
     {
         using var _context = new ReadingContext();
         _context.Readings.Remove(deletedRow);
-        return _context.SaveChanges() == 1;        
+        return _context.SaveChanges() == 1;
     }
 
     public static Reading? Query(int _id)
@@ -77,29 +78,30 @@ public class ReadingController
         using var _context = new ReadingContext();
         try
         {
-            var row = _context.Readings.Where(b => b.Id == _id).First(); 
+            var row = _context.Readings.Where(b => b.Id == _id).First();
             return row;
         }
         catch (Exception)
         {
-            Log.Error("{id} Supplied does not exist. Returning NULL back to the function",_id);
+            Log.Error("{id} Supplied does not exist. Returning NULL back to the function", _id);
             return null;
         }
-        
     }
 
     public static void DisplayAllRecords()
     {
         using var _context = new ReadingContext();
         List<Reading> rows = _context.Readings.Where(b => b.Id != -1).ToList();
+        Log.Debug("Number of Rows in the List is {0}", rows.Count);
 
+        
         ConsoleTableBuilder.From(rows)
-            .WithTitle("Blood Sugar Readings", ConsoleColor.Yellow, ConsoleColor.DarkGray)
-            .WithTextAlignment(new Dictionary<int, TextAligntment>
-            {
-                {1, TextAligntment.Center },
-                {2, TextAligntment.Center }
-            }).ExportAndWriteLine();
+          .WithTitle("Blood Sugar Readings", ConsoleColor.Yellow, ConsoleColor.DarkGray)
+          .WithTextAlignment(new Dictionary<int, TextAligntment>
+          {
+              {1, TextAligntment.Center },
+              {2, TextAligntment.Center }
+          }).ExportAndWriteLine();            
     }
 
     public static ReportData? GetReportData()
@@ -118,8 +120,6 @@ public class ReadingController
         {
             Log.Error("Table has no data. I have not inserted anything yet");
             return null;
-        }        
+        }
     }
-
-   
 }

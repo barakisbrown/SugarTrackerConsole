@@ -2,7 +2,7 @@
 
 namespace STConsole.UserInput;
 
-public class Input
+public static class Input
 {
     private readonly static string AmountInputString = "Enter Blood Reading: ";
     private readonly static string DateInputString = "Enter the date [MM-dd-yyyy] OR Enter for todays: ";
@@ -64,7 +64,7 @@ public class Input
         Console.Write(IdInputString);
         string? result = Console.ReadLine();
         int id;
-        while(string.IsNullOrEmpty(result) || !Int32.TryParse(result,out id))
+        while (string.IsNullOrEmpty(result) || !Int32.TryParse(result, out id))
         {
             Console.WriteLine("ID Needs to be number. Please try again");
             result = Console.ReadLine();
@@ -82,7 +82,7 @@ public class Input
             if (input.Key == ConsoleKey.A)
                 return true;
             else if (input.Key == ConsoleKey.D)
-                return false;            
+                return false;
         }
     }
 }

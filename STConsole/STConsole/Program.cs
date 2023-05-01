@@ -17,31 +17,35 @@ Log.Logger = new LoggerConfiguration()
 _ = new ReadingController();
 Log.Information("Sugar Tracker Console App Starting up");
 int option = -1;
-while(option != 0)
+while (option != 0)
 {
-    Console.WriteLine("Welcome to Sugar Tracker.  This will help track my blood sugar so I can see how I am doing.");
     Menu.GetMenu();
     option = Menu.GetMenuSelection();
-    switch(option)
+    switch (option)
     {
-        case 0:            
+        case 0:
             break;
+
         case 1:
             Log.Debug("Displaying all records");
             Menu.ShowAll();
             break;
+
         case 2:
             Log.Debug("Adding new records");
             Menu.Add();
             break;
+
         case 3:
             Log.Debug("Deleting Records");
             Menu.Delete();
             break;
+
         case 4:
             Log.Debug("Updating Records");
             Menu.Update();
             break;
+
         case 5:
             Log.Debug("Detailed Report");
             Menu.ShowReport();

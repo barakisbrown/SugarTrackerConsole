@@ -6,7 +6,7 @@ using STConsole.Model;
 public class ReadingContext : DbContext
 {
     public DbSet<Reading> Readings { get; set; }
-    public string dbPath;
+    private readonly string dbPath;
 
     public ReadingContext()
     {
@@ -15,6 +15,6 @@ public class ReadingContext : DbContext
         dbPath = System.IO.Path.Join(path, "readings.db");
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder options) => options.UseSqlite($"Data Source={dbPath}");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
 }

@@ -5,12 +5,13 @@ using STConsole.Model;
 
 namespace STConsole.UserInput;
 
-public class Menu
+public static class Menu
 {
     private readonly static string MenuInputString = "\tPlease Select (1-5) OR 0 to exit";
 
     public static void GetMenu()
     {
+        Console.WriteLine("Welcome to Sugar Tracker.  A blood sugar tracking application.");
         string menu = @"
         
         Main Menu
@@ -50,37 +51,45 @@ public class Menu
         }
     }
 
-    public static void Add() 
-    {        
+    public static void Add()
+    {
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("Adding a new blood sugar reading.");
+            Console.WriteLine("Adding a new blood sugar reading(-1 to exit).");
             int amount = Input.GetAmount();
-            DateTime date = Input.GetDate();
-            Log.Debug("Blood Sugar Amount => {0}", amount);
-            Log.Debug("Date Added => {date}", date.ToShortDateString());
-            Reading reading = new() { Amount = amount, Added = date };
-            if (ReadingController.Insert(reading))
+            if (amount == -1)
             {
-                Console.WriteLine("Blood Sugar Reading has been successfully Added.");
-                Log.Debug("Row was inserted successfully");
+                Console.WriteLine("\nReturning back to main menu.");
+                break;
             }
             else
             {
-                Console.WriteLine("Blood Suagr was not successfully not added.");
-                Log.Error("Something happened where the log could not been inserted");
-            }
+                DateTime date = Input.GetDate();
+                Log.Debug("Blood Sugar Amount => {0}", amount);
+                Log.Debug("Date Added => {date}", date.ToShortDateString());
+                Reading reading = new() { Amount = amount, Added = date };
+                if (ReadingController.Insert(reading))
+                {
+                    Console.WriteLine("Blood Sugar Reading has been successfully Added.");
+                    Log.Debug("Row was inserted successfully");
+                }
+                else
+                {
+                    Console.WriteLine("Blood Suagr was not successfully not added.");
+                    Log.Error("Something happened where the log could not been inserted");
+                }
 
-            Console.WriteLine("Do you wish to add another? (Y/N)");
-            if (!Input.GetYesno())
-                break;
+                Console.WriteLine("Do you wish to add another? (Y/N)");
+                if (!Input.GetYesno())
+                    break;
+            }            
         }
         Thread.Sleep(1000);
         Console.Clear();
     }
 
-    public static void Update() 
+    public static void Update()
     {
         Console.Clear();
         Console.WriteLine("Updating Information either by the Amount or Date Added.");
@@ -90,7 +99,7 @@ public class Menu
         {
             int id = Input.GetID();
             if (id != -1)
-            { 
+            {
                 var sel = ReadingController.Query(id);
                 if (sel is null)
                 {
@@ -100,7 +109,7 @@ public class Menu
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("The row that we are updating is => {0}",sel);
+                    Console.WriteLine("The row that we are updating is => {0}", sel);
                     bool choice = Input.GetAmountOrDate();
                     Console.WriteLine();
                     // TRUE IS AMOUNT / FALSE IS DATE
@@ -141,7 +150,7 @@ public class Menu
         Console.Clear();
     }
 
-    public static void Delete() 
+    public static void Delete()
     {
         Console.Clear();
         Console.WriteLine("Deleting a Row");
@@ -178,7 +187,7 @@ public class Menu
         Console.Clear();
     }
 
-    public static void ShowAll() 
+    public static void ShowAll()
     {
         Console.Clear();
         Console.WriteLine("VIEWING ALL BLOOD RESULTS\n");
@@ -203,9 +212,9 @@ public class Menu
         else
         {
             List<ReportData> quickReport = new()
-        {
-            reportData
-        };
+            {
+                reportData
+            };
 
             ConsoleTableBuilder.From(quickReport)
                 .WithTitle("Blood Sugar Quick Facts", ConsoleColor.Red, ConsoleColor.Gray)
@@ -214,7 +223,7 @@ public class Menu
 
             Console.WriteLine();
             ReadingController.DisplayAllRecords();
-            Console.WriteLine();           
+            Console.WriteLine();
         }
         Console.WriteLine("Press any key to return back to the main menu.");
         Console.ReadKey();
