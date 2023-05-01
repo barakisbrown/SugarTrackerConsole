@@ -3,9 +3,13 @@
 using ConsoleTableExt;
 using STConsole.Model;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Serilog;
 
 public class ReadingController
 {
+    private readonly string TableName = "Readings";
     public ReadingController()
     {
         using var _context = new ReadingContext();
