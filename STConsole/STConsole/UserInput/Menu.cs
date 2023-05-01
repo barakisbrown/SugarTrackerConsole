@@ -80,9 +80,103 @@ public class Menu
         Console.Clear();
     }
 
-    public static void Update() { }
+    public static void Update() 
+    {
+        Console.Clear();
+        Console.WriteLine("Updating Information either by the Amount or Date Added.");
 
-    public static void Delete() { }
+        ReadingController.DisplayAllRecords();
+        while (true)
+        {
+            int id = Input.GetID();
+            if (id != -1)
+            { 
+                var sel = ReadingController.Query(id);
+                if (sel is null)
+                {
+                    Console.WriteLine("Please try again. Select an # from the list.");
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("The row that we are updating is => {0}",sel);
+                    bool choice = Input.GetAmountOrDate();
+                    Console.WriteLine();
+                    // TRUE IS AMOUNT / FALSE IS DATE
+                    if (choice)
+                    {
+                        int updatedAmount = Input.GetAmount();
+                        Console.WriteLine($"Do you wish to change the Old Amount = {sel.Amount} with New Amount = {updatedAmount} (Y/N)?");
+                        if (Input.GetYesno())
+                        {
+                            Reading updateReading = new() { Id = sel.Id, Amount = updatedAmount, Added = sel.Added };
+                            if (ReadingController.UpdateAmount(updateReading))
+                            {
+                                Console.WriteLine("Amount has been updated.");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        DateTime updatedDate = Input.GetDate();
+                        Console.WriteLine($"Do you want to change the old date {sel.Added.ToShortDateString()} with {updatedDate.ToShortDateString()} (Y/N)");
+                        if (Input.GetYesno())
+                        {
+                            Reading updateReading = new() { Id = sel.Id, Amount = sel.Amount, Added = updatedDate };
+                            if (ReadingController.UpateDate(updateReading))
+                            {
+                                Console.WriteLine("Date has been updated.");
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine("Do you wish to change anything else (Y/N)?");
+                if (!Input.GetYesno())
+                    break;
+            }
+            break;
+        }
+        Thread.Sleep(1000);
+        Console.Clear();
+    }
+
+    public static void Delete() 
+    {
+        Console.Clear();
+        Console.WriteLine("Deleting a Row");
+        ReadingController.DisplayAllRecords();
+        while (true)
+        {
+            int id = Input.GetID();
+            if (id != -1)
+            {
+                var sel = ReadingController.Query(id);
+                if (sel is null)
+                {
+                    Console.WriteLine("Please try again. Select an # from the list.");
+                    continue;
+                }
+                Console.WriteLine($"Do you wish to delete the following: {sel}  (Y/N)");
+                if (Input.GetYesno())
+                {
+                    if (ReadingController.Delete(sel))
+                    {
+                        Console.WriteLine("Row was removed successfully.");
+                        Log.Information("Row {id} was deleted", sel.Id);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No removal was done.");
+                    continue;
+                }
+            }
+            break;
+        }
+        Thread.Sleep(1000);
+        Console.Clear();
+    }
 
     public static void ShowAll() 
     {
