@@ -219,6 +219,10 @@ public static class Menu
             ConsoleTableBuilder.From(quickReport)
                 .WithTitle("Blood Sugar Quick Facts", ConsoleColor.Red, ConsoleColor.Gray)
                 .WithColumn("MIN", "MAX", "AVG", "Over 200")
+                .WithTextAlignment(new Dictionary<int, TextAligntment> 
+                {
+                    {3, TextAligntment.Center }
+                })
                 .ExportAndWriteLine();
 
             Console.WriteLine();
