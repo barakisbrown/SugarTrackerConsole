@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "STConsole": {
-      "commandName": "Project",
-      "workingDirectory": "C:\\Users\\barak\\source\\repos\\SugarTrackerConsole\\STConsole\\STConsole"
-    }
-  }
-}
