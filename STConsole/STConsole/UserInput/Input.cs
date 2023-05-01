@@ -6,14 +6,19 @@ public class Input
 {
     private readonly static string AmountInputString = "Enter Blood Reading: ";
     private readonly static string DateInputString = "Enter the date [MM-dd-yyyy] OR Enter for todays: ";
+    private readonly static string IdInputString = "Select # to Update/Delete or -1 to return back to the main menu?  > ";
+    private readonly static string UpdateString = "Update the A)mount or D)ate of this reading? (A/D)";
 
     public static bool GetYesno()
     {
-        ConsoleKeyInfo input = Console.ReadKey(true);
-        if (input.Key == ConsoleKey.Y)
-            return true;
-        else
-            return false;
+        while (true)
+        {
+            ConsoleKeyInfo input = Console.ReadKey(true);
+            if (input.Key == ConsoleKey.Y)
+                return true;
+            else if (input.Key == ConsoleKey.N)
+                return false;
+        }
     }
 
     public static int GetAmount()
@@ -51,6 +56,33 @@ public class Input
                 Console.Write(DateInputString);
                 result = Console.ReadLine();
             }
+        }
+    }
+
+    public static int GetID()
+    {
+        Console.Write(IdInputString);
+        string? result = Console.ReadLine();
+        int id;
+        while(string.IsNullOrEmpty(result) || !Int32.TryParse(result,out id))
+        {
+            Console.WriteLine("ID Needs to be number. Please try again");
+            result = Console.ReadLine();
+        }
+        return id;
+    }
+
+    public static bool GetAmountOrDate()
+    {
+        Console.Write(UpdateString);
+
+        while (true)
+        {
+            ConsoleKeyInfo input = Console.ReadKey(true);
+            if (input.Key == ConsoleKey.A)
+                return true;
+            else if (input.Key == ConsoleKey.D)
+                return false;            
         }
     }
 }
