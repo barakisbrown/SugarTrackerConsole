@@ -97,6 +97,7 @@ public class ReadingController
         
         ConsoleTableBuilder.From(rows)
           .WithTitle("Blood Sugar Readings", ConsoleColor.Yellow, ConsoleColor.DarkGray)
+          .WithFormat(ConsoleTableBuilderFormat.Minimal)
           .WithTextAlignment(new Dictionary<int, TextAligntment>
           {
               {1, TextAligntment.Center },
