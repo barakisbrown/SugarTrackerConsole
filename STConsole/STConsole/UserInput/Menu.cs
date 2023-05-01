@@ -95,12 +95,20 @@ public class Menu
         Console.ReadKey();
         Console.Clear();
     }
-    public static void ShowReport() 
+    public static void ShowReport()
     {
         Console.Clear();
-        
-        ReportData reportData = ReadingController.GetReportData();
-        List<ReportData> quickReport = new()
+
+        ReportData? reportData = ReadingController.GetReportData();
+
+        if (reportData is null)
+        {
+            Console.WriteLine("No report generated due to no data been added.");
+            Console.WriteLine("Add some data and come back to see report");
+        }
+        else
+        {
+            List<ReportData> quickReport = new()
         {
             reportData
         };
