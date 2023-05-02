@@ -111,11 +111,12 @@ public class ReadingController
 
         try
         {
+            int count = _context.Readings.Count();
             int max = _context.Readings.Max(x => x.Amount);
             int min = _context.Readings.Min(x => x.Amount);
             int avg = (int)_context.Readings.Average(x => x.Amount);
             int ovr = _context.Readings.Count(x => x.Amount > 200);
-            return new ReportData { MAX = max, MIN = min, AVG = avg, Over200 = ovr };
+            return new ReportData { Count=count, MAX = max, MIN = min, AVG = avg, Over200 = ovr };
         }
         catch (Exception ex)
         {
