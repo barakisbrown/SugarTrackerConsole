@@ -27,7 +27,7 @@ public static class Input
         string? result = Console.ReadLine();
         int amount;
 
-        while (string.IsNullOrEmpty(result) || !Int32.TryParse(result, out amount))
+        while (string.IsNullOrEmpty(result) || !Int32.TryParse(result, out amount) || amount < -1)
         {
             Console.WriteLine("Your answer needs to be a positive interger.");
             Console.Write(AmountInputString);
