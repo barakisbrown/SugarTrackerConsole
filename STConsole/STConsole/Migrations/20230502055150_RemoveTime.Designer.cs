@@ -11,8 +11,8 @@ using STConsole.DataLayer;
 namespace STConsole.Migrations
 {
     [DbContext(typeof(ReadingContext))]
-    [Migration("20230429022814_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230502055150_RemoveTime")]
+    partial class RemoveTime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace STConsole.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Added")
+                    b.Property<DateOnly>("Added")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Amount")

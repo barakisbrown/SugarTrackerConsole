@@ -23,7 +23,7 @@ namespace STConsole.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Added")
+                    b.Property<DateOnly>("Added")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Amount")
