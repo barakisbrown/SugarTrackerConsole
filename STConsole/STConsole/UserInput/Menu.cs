@@ -65,10 +65,10 @@ public static class Menu
             }
             else
             {
-                DateTime date = Input.GetDate();
+                DateOnly date = DateOnly.FromDateTime(Input.GetDate());
                 Log.Debug("Blood Sugar Amount => {0}", amount);
                 Log.Debug("Date Added => {date}", date.ToShortDateString());
-                Reading reading = new() { Amount = amount, Added = DateOnly.FromDateTime(date) };
+                Reading reading = new() { Amount = amount, Added = date };
                 if (ReadingController.Insert(reading))
                 {
                     Console.WriteLine("Blood Sugar Reading has been successfully Added.");
@@ -128,11 +128,11 @@ public static class Menu
                     }
                     else
                     {
-                        DateTime updatedDate = Input.GetDate();
+                        DateOnly updatedDate = DateOnly.FromDateTime(Input.GetDate());
                         Console.WriteLine($"Do you want to change the old date {sel.Added.ToShortDateString()} with {updatedDate.ToShortDateString()} (Y/N)");
                         if (Input.GetYesno())
                         {
-                            Reading updateReading = new() { Id = sel.Id, Amount = sel.Amount, Added = DateOnly.FromDateTime(updatedDate) };
+                            Reading updateReading = new() { Id = sel.Id, Amount = sel.Amount, Added = updatedDate };
                             if (ReadingController.UpateDate(updateReading))
                             {
                                 Console.WriteLine("Date has been updated.");
