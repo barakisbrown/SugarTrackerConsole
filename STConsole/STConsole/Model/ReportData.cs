@@ -2,6 +2,7 @@
 
 public class ReportData
 {
+    public int Count { get; set; }
     public int MIN { get; set; }
     public int MAX { get; set; }
     public int AVG { get; set; }
