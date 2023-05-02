@@ -7,7 +7,7 @@ namespace STConsole.UserInput;
 
 public static class Menu
 {
-    private readonly static string MenuInputString = "\tPlease Select (1-5) OR 0 to exit";
+    private readonly static string MenuInputString = "\tPlease Select (1-5) OR 0 to exit. :> ";
 
     public static void GetMenu()
     {
