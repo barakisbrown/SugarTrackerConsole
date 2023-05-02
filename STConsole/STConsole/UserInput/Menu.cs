@@ -58,12 +58,7 @@ public static class Menu
             Console.Clear();
             Console.WriteLine("Adding a new blood sugar reading(-1 to exit).");
             int amount = Input.GetAmount();
-            if (amount == -1)
-            {
-                Console.WriteLine("\nReturning back to main menu.");
-                break;
-            }
-            else
+            if (amount != -1)          
             {
                 DateOnly date = DateOnly.FromDateTime(Input.GetDate());
                 Log.Debug("Blood Sugar Amount => {0}", amount);
@@ -81,22 +76,25 @@ public static class Menu
                 }
 
                 Console.WriteLine("Do you wish to add another? (Y/N)");
-                if (!Input.GetYesno())
+                if (Input.GetYesno())
+                    continue;
+                else
                     break;
-            }            
+            }
+            break;
         }
+        Console.WriteLine("\nReturning back to the main menu.");
         Thread.Sleep(1000);
         Console.Clear();
     }
 
     public static void Update()
-    {
-        Console.Clear();
-        Console.WriteLine("Updating Information either by the Amount or Date Added.");
-
-        ReadingController.DisplayAllRecords();
+    {       
         while (true)
         {
+            Console.Clear();
+            Console.WriteLine("Updating Information either by the Amount or Date Added.");
+            ReadingController.DisplayAllRecords();
             int id = Input.GetID();
             if (id != -1)
             {
@@ -129,7 +127,7 @@ public static class Menu
                     else
                     {
                         DateOnly updatedDate = DateOnly.FromDateTime(Input.GetDate());
-                        Console.WriteLine($"Do you want to change the old date {sel.Added.ToShortDateString()} with {updatedDate.ToShortDateString()} (Y/N)");
+                        Console.WriteLine($"Do you want to change the old date {sel.Added} with {updatedDate} (Y/N)");
                         if (Input.GetYesno())
                         {
                             Reading updateReading = new() { Id = sel.Id, Amount = sel.Amount, Added = updatedDate };
@@ -141,11 +139,14 @@ public static class Menu
                     }
                 }
                 Console.WriteLine("Do you wish to change anything else (Y/N)?");
-                if (!Input.GetYesno())
+                if (Input.GetYesno())
+                    continue;
+                else
                     break;
             }
             break;
         }
+        Console.WriteLine("\nReturning back to the main menu.");
         Thread.Sleep(1000);
         Console.Clear();
     }
@@ -183,6 +184,7 @@ public static class Menu
             }
             break;
         }
+        Console.WriteLine("\nReturning back to the main menu.");
         Thread.Sleep(1000);
         Console.Clear();
     }
@@ -217,16 +219,15 @@ public static class Menu
             };
 
             ConsoleTableBuilder.From(quickReport)
-                .WithTitle("Blood Sugar Quick Facts", ConsoleColor.Red, ConsoleColor.Gray)
-                .WithColumn("MIN", "MAX", "AVG", "Over 200")
+                .WithTitle("Quick facts from your readings", ConsoleColor.Red, ConsoleColor.Gray)
+                .WithColumn("# READINGS","MIN", "MAX", "AVG", "Over 200")
                 .WithTextAlignment(new Dictionary<int, TextAligntment> 
                 {
-                    {3, TextAligntment.Center }
+                    {0, TextAligntment.Center },
+                    {4, TextAligntment.Center }
                 })
                 .ExportAndWriteLine();
 
-            Console.WriteLine();
-            ReadingController.DisplayAllRecords();
             Console.WriteLine();
         }
         Console.WriteLine("Press any key to return back to the main menu.");
