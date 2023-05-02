@@ -8,6 +8,6 @@ public class Reading
 
     public override string ToString()
     {
-        return $"ID = {Id}, Amount = {Amount}, Date Added = {Added.ToShortDateString()}";
+        return $"ID = {Id}, Amount = {Amount}, Date Added = {Added}";
     }
 }
