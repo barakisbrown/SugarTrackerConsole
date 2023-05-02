@@ -15,7 +15,7 @@ Log.Logger = new LoggerConfiguration()
 // END LOG SETUP
 // CHECKING IF DATABASE AND TABLES EXIST
 _ = new ReadingController();
-Log.Information("Sugar Tracker Console App Starting up");
+Log.Information("Sugar Tracker App Starting up");
 int option = -1;
 while (option != 0)
 {
@@ -27,27 +27,27 @@ while (option != 0)
             break;
 
         case 1:
-            Log.Debug("Displaying all records");
+            Log.Debug("Display all readings");
             Menu.ShowAll();
             break;
 
         case 2:
-            Log.Debug("Adding new records");
+            Log.Debug("Add new reading");
             Menu.Add();
             break;
 
         case 3:
-            Log.Debug("Deleting Records");
+            Log.Debug("Delete a reading");
             Menu.Delete();
             break;
 
         case 4:
-            Log.Debug("Updating Records");
+            Log.Debug("Update Readings");
             Menu.Update();
             break;
 
         case 5:
-            Log.Debug("Detailed Report");
+            Log.Debug("Quick Report");
             Menu.ShowReport();
             break;
     }
@@ -55,4 +55,4 @@ while (option != 0)
 Console.WriteLine();
 Console.WriteLine();
 Console.WriteLine("Thank you for using Sugar Tracker.");
-Log.Information("Sugar Tracker Console App Shutting Down");
+Log.Information("Sugar Tracker App Shutting Down");
