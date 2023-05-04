@@ -94,7 +94,7 @@ public class ReadingController
         List<Reading> rows = _context.Readings.Where(b => b.Id != -1).ToList();
         Log.Debug("Number of Rows in the List is {0}", rows.Count);
 
-        
+
         ConsoleTableBuilder.From(rows)
           .WithTitle("Blood Sugar Readings", ConsoleColor.Yellow, ConsoleColor.DarkGray)
           .WithFormat(ConsoleTableBuilderFormat.Minimal)
@@ -102,7 +102,7 @@ public class ReadingController
           {
               {1, TextAligntment.Center },
               {2, TextAligntment.Center }
-          }).ExportAndWriteLine();            
+          }).ExportAndWriteLine();
     }
 
     public static ReportData? GetReportData()
@@ -116,9 +116,37 @@ public class ReadingController
             int min = _context.Readings.Min(x => x.Amount);
             int avg = (int)_context.Readings.Average(x => x.Amount);
             int ovr = _context.Readings.Count(x => x.Amount > 200);
-            return new ReportData { Count=count, MAX = max, MIN = min, AVG = avg, Over200 = ovr };
+            return new ReportData { Count = count, MAX = max, MIN = min, AVG = avg, Over200 = ovr };
         }
         catch (Exception ex)
+        {
+            Log.Error("Table has no data. I have not inserted anything yet");
+            return null;
+        }
+    }
+
+    public static ReportData? GetReportByDays(int dayAmount)
+    {
+        // SELECT COUNT(*), MIN(Amount),AVG(Amount),Max(Amount) FROM Readings WHERE Added > datetime('now', '-{dayAmount} day')
+        using var conn = new ReadingContext();
+
+        try
+        {
+            var comp = DateOnly.FromDateTime(DateTime.Now.AddDays(-dayAmount));
+            var result = conn.Readings.Where(r => r.Added > comp);
+
+            ReportData data = new()
+            {
+                Count = result.Count(),
+                MIN = result.Min(x => x.Amount),
+                MAX = result.Max(x => x.Amount),
+                AVG = (int)result.Average(x => x.Amount),
+                Over200 = result.Count(x => x.Amount > 200)
+            };
+
+            return data;
+        }
+        catch (Exception)
         {
             Log.Error("Table has no data. I have not inserted anything yet");
             return null;
