@@ -48,7 +48,7 @@ while (option != 0)
 
         case 5:
             Log.Debug("Quick Report");
-            Menu.ShowReport();
+            Menu.ShowQuickReport();
             break;
     }
 }
