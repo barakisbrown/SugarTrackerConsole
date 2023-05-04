@@ -2,6 +2,7 @@
 using Serilog;
 using STConsole.DataLayer;
 using STConsole.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace STConsole.UserInput;
 
@@ -231,6 +232,46 @@ public static class Menu
             Console.WriteLine();
         }
         Console.WriteLine("Press any key to return back to the main menu.");
+        Console.ReadKey();
+        Console.Clear();
+    }
+
+    public static void ShowQuickReport()
+    {
+        Console.Clear();        
+        var first30 = ReadingController.GetReportByDays(30);
+        var first60 = ReadingController.GetReportByDays(60);
+        var first90 = ReadingController.GetReportByDays(90);
+
+        var data = new List<ReportData>();
+
+        if (first30 is not null)
+        {
+            data.Add(first30);
+        }
+
+        if (first60 is not null)
+        {
+            data.Add(first60);
+        }
+
+
+        if (first90 is not null)
+        {
+            data.Add(first90);
+        }
+
+        ConsoleTableBuilder.From(data)
+            .WithTitle("Below are your 30/60/90 day report", ConsoleColor.Red, ConsoleColor.Gray)
+            .WithColumn("# READINGS", "MIN", "MAX", "AVG", "Over 200")
+            .WithTextAlignment(new Dictionary<int, TextAligntment>
+            {
+                {0, TextAligntment.Center },
+                {4, TextAligntment.Center }
+            })
+            .ExportAndWriteLine();
+
+        Console.WriteLine("Press any key");
         Console.ReadKey();
         Console.Clear();
     }
