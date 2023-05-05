@@ -97,6 +97,7 @@ public class ReadingController
 
         ConsoleTableBuilder.From(rows)
           .WithTitle("Blood Sugar Readings", ConsoleColor.Yellow, ConsoleColor.DarkGray)
+          .WithColumn("Number","Amount","Date Added")
           .WithFormat(ConsoleTableBuilderFormat.Minimal)
           .WithTextAlignment(new Dictionary<int, TextAligntment>
           {
@@ -151,5 +152,11 @@ public class ReadingController
             Log.Error("Table has no data. I have not inserted anything yet");
             return null;
         }
+    }
+
+    public static bool IsEmpty()
+    {
+        using var ctx = new ReadingContext();
+        return !ctx.Readings.Any();
     }
 }
