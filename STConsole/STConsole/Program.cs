@@ -19,6 +19,7 @@ Log.Information("Sugar Tracker App Starting up");
 int option = -1;
 while (option != 0)
 {
+    Console.Clear();
     Menu.GetMenu();
     option = Menu.GetMenuSelection();
     switch (option)
