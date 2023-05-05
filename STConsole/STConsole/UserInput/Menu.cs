@@ -2,7 +2,6 @@
 using Serilog;
 using STConsole.DataLayer;
 using STConsole.Model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace STConsole.UserInput;
 
