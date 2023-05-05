@@ -23,8 +23,8 @@ public static class Menu
         Type 2 to Add Reading
         Type 3 to Delete Reading
         Type 4 to Update Reading
-        Type 5 to Show Lifttime Report
-        Type 6 to Show Detailed Report
+        Type 5 to Show Lifetime Report
+        Type 6 to Show 30/60/90 Day Report
         ----------------------------------
         ";
 
