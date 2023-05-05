@@ -91,7 +91,7 @@ public class ReadingController
     public static void DisplayAllRecords()
     {
         using var _context = new ReadingContext();
-        List<Reading> rows = _context.Readings.Where(b => b.Id != -1).ToList();
+        List<Reading> rows = _context.Readings.Where(b => b.Id != -1).OrderByDescending(b => b.Added).ToList();
         Log.Debug("Number of Rows in the List is {0}", rows.Count);
 
 
