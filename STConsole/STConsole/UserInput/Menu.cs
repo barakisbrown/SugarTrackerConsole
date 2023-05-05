@@ -97,6 +97,7 @@ public static class Menu
             Console.Clear();
             Console.WriteLine("Updating Information either by the Amount or Date Added.");
             ReadingController.DisplayAllRecords();
+            Console.WriteLine();
             int id = Input.GetID();
             if (id != -1)
             {
@@ -158,6 +159,7 @@ public static class Menu
         Console.Clear();
         Console.WriteLine("Deleting a Row");
         ReadingController.DisplayAllRecords();
+        Console.WriteLine();
         while (true)
         {
             int id = Input.GetID();
