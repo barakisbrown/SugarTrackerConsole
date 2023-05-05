@@ -1,4 +1,5 @@
 ﻿using ConsoleTableExt;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Serilog;
 using STConsole.DataLayer;
 using STConsole.Model;
@@ -194,7 +195,10 @@ public static class Menu
         Console.Clear();
         Console.WriteLine("VIEWING ALL BLOOD RESULTS\n");
 
-        ReadingController.DisplayAllRecords();
+        if (ReadingController.IsEmpty())        
+            Console.WriteLine("No reading entered. Please add some readings.");
+        else 
+            ReadingController.DisplayAllRecords();
         Console.WriteLine();
         Console.WriteLine("Press any key to return back to the main menu.");
         Console.ReadKey();
