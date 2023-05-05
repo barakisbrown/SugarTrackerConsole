@@ -8,7 +8,7 @@ namespace STConsole.UserInput;
 
 public static class Menu
 {
-    private readonly static string MenuInputString = "\tPlease Select (1-5) OR 0 to exit. :> ";
+    private readonly static string MenuInputString = "\tPlease Select (1-6) OR 0 to exit. :> ";
 
     public static void GetMenu()
     {
@@ -23,7 +23,8 @@ public static class Menu
         Type 2 to Add Reading
         Type 3 to Delete Reading
         Type 4 to Update Reading
-        Type 5 to Show Detailed Report
+        Type 5 to Show Lifttime Report
+        Type 6 to Show Detailed Report
         ----------------------------------
         ";
 
@@ -46,7 +47,7 @@ public static class Menu
             catch (FormatException _)
             {
                 Console.WriteLine();
-                Console.WriteLine("Input needs to be between 0 and 5 only. Please try again.");
+                Console.WriteLine("Input needs to be between 0 and 6 only. Please try again.");
                 Console.Write(MenuInputString);
             }
         }
@@ -204,7 +205,7 @@ public static class Menu
         Console.ReadKey();
         Console.Clear();
     }
-    public static void ShowReport()
+    public static void ShowLifeTimeReport()
     {
         Console.Clear();
 
@@ -223,7 +224,7 @@ public static class Menu
             };
 
             ConsoleTableBuilder.From(quickReport)
-                .WithTitle("Quick facts from your readings", ConsoleColor.Red, ConsoleColor.Gray)
+                .WithTitle("Lifetime Results", ConsoleColor.Red, ConsoleColor.Gray)
                 .WithColumn("# READINGS","MIN", "MAX", "AVG", "Over 200")
                 .WithTextAlignment(new Dictionary<int, TextAligntment> 
                 {
