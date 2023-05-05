@@ -6,7 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <DebugType>embedded</DebugType>
+    <ApplicationIcon>NicePng_blood-symbol-png_3647802.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="NicePng_blood-symbol-png_3647802.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ConsoleTableExt" Version="3.2.0" />
