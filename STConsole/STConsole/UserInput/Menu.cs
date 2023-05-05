@@ -238,39 +238,47 @@ public static class Menu
 
     public static void ShowQuickReport()
     {
-        Console.Clear();        
-        var first30 = ReadingController.GetReportByDays(30);
-        var first60 = ReadingController.GetReportByDays(60);
-        var first90 = ReadingController.GetReportByDays(90);
-
-        var data = new List<ReportData>();
-
-        if (first30 is not null)
+        Console.Clear();
+        if (ReadingController.IsEmpty())
         {
-            data.Add(first30);
+            Console.WriteLine("No report can be generated due to no data present.");
+            Console.WriteLine("Add some data and come back to see report");
+            Console.WriteLine();
         }
-
-        if (first60 is not null)
+        else
         {
-            data.Add(first60);
-        }
+            var first30 = ReadingController.GetReportByDays(30);
+            var first60 = ReadingController.GetReportByDays(60);
+            var first90 = ReadingController.GetReportByDays(90);
 
+            var data = new List<ReportData>();
 
-        if (first90 is not null)
-        {
-            data.Add(first90);
-        }
-
-        ConsoleTableBuilder.From(data)
-            .WithTitle("Below are your 30/60/90 day report", ConsoleColor.Red, ConsoleColor.Gray)
-            .WithColumn("# READINGS", "MIN", "MAX", "AVG", "Over 200")
-            .WithTextAlignment(new Dictionary<int, TextAligntment>
+            if (first30 is not null)
             {
+                data.Add(first30);
+            }
+
+            if (first60 is not null)
+            {
+                data.Add(first60);
+            }
+
+
+            if (first90 is not null)
+            {
+                data.Add(first90);
+            }
+
+            ConsoleTableBuilder.From(data)
+                .WithTitle("Below are your 30/60/90 day report", ConsoleColor.Red, ConsoleColor.Gray)
+                .WithColumn("# READINGS", "MIN", "MAX", "AVG", "Over 200")
+                .WithTextAlignment(new Dictionary<int, TextAligntment>
+                {
                 {0, TextAligntment.Center },
                 {4, TextAligntment.Center }
-            })
-            .ExportAndWriteLine();
-
+                })
+                .ExportAndWriteLine();           
+        }
         Console.WriteLine("Press any key");
         Console.ReadKey();
         Console.Clear();
