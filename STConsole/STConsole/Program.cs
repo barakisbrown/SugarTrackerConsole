@@ -48,7 +48,11 @@ while (option != 0)
             break;
 
         case 5:
-            Log.Debug("Quick Report");
+            Log.Debug("Show Overall Report");
+            Menu.ShowLifeTimeReport();
+            break;
+        case 6:
+            Log.Debug("Show 30/60/90 Report");
             Menu.ShowQuickReport();
             break;
     }
