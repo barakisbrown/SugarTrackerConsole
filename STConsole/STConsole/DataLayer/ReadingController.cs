@@ -1,10 +1,12 @@
 ﻿namespace STConsole.DataLayer;
 
 using ConsoleTableExt;
+using CsvHelper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using STConsole.Model;
 using System;
+using System.Globalization;
 
 public class ReadingController
 {
@@ -158,5 +160,27 @@ public class ReadingController
     {
         using var ctx = new ReadingContext();
         return !ctx.Readings.Any();
+    }
+
+    public static int Count()
+    {
+        using var ctx = new ReadingContext();
+        return ctx.Readings.Count();
+    }
+
+    public static List<Reading> GetAlll()
+    {
+        using var ctx = new ReadingContext();
+        var records = ctx.Readings.Where(b => b.Id > 0).ToList();
+        return records;
+    }
+
+    public static void WriteCSV()
+    {
+        var csvFileName = "latest.csv";
+        var records = GetAlll();
+        using var writer = new StreamWriter(csvFileName);
+        using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csv.WriteRecords(records);
     }
 }
