@@ -1,14 +1,15 @@
 ﻿using ConsoleTableExt;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using CsvHelper;
 using Serilog;
 using STConsole.DataLayer;
 using STConsole.Model;
+using System.Globalization;
 
 namespace STConsole.UserInput;
 
 public static class Menu
 {
-    private readonly static string MenuInputString = "\tPlease Select (1-6) OR 0 to exit. :> ";
+    private readonly static string MenuInputString = "\tPlease Select (1-7)OR 0 to exit. :> ";
 
     public static void GetMenu()
     {
@@ -25,6 +26,7 @@ public static class Menu
         Type 4 to Update Reading
         Type 5 to Show Lifetime Report
         Type 6 to Show 30/60/90 Day Report
+        Type 7 to write reading to a csv file
         ----------------------------------
         ";
 
@@ -47,7 +49,7 @@ public static class Menu
             catch (FormatException _)
             {
                 Console.WriteLine();
-                Console.WriteLine("Input needs to be between 0 and 6 only. Please try again.");
+                Console.WriteLine("Input needs to be between 0 and 7 only. Please try again.");
                 Console.Write(MenuInputString);
             }
         }
@@ -287,6 +289,41 @@ public static class Menu
         }
         Console.WriteLine("Press any key");
         Console.ReadKey();
+        Console.Clear();
+    }
+
+    public static void WriteCsv()
+    {
+        var csvFileName = "latest.csv";
+        var count = ReadingController.Count();
+        Console.Clear();
+        if (count == 0) 
+        {
+            Console.WriteLine("There are currently no records that can be written.");
+            Console.WriteLine("Once you have added some, come back.");
+        }
+        else
+        {            
+            if (File.Exists(csvFileName))
+            {
+                Console.WriteLine($"File {csvFileName} exist. Do you wish to overwrite it? (Y/N) |> ");
+                if (Input.GetYesno())
+                {
+                    Console.WriteLine($"There are currently {count} records to be written to a csv file.");
+                    ReadingController.WriteCSV();
+                    Console.WriteLine($"{csvFileName} was written successfully.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"There are currently {count} records to be written to a csv file.");
+                ReadingController.WriteCSV();
+                Console.WriteLine($"{csvFileName} was written successfully.");
+            }
+        }
+        Console.WriteLine("Hit any key to return back to the main menu.");
+        Console.ReadKey(true);
+        Thread.Sleep(500);
         Console.Clear();
     }
 }
