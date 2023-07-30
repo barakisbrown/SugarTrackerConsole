@@ -55,6 +55,10 @@ while (option != 0)
             Log.Debug("Show 30/60/90 Report");
             Menu.ShowQuickReport();
             break;
+        case 7:
+            Log.Debug("Write to CSV File");
+            Menu.WriteCsv();
+            break;
     }
 }
 Console.WriteLine();
