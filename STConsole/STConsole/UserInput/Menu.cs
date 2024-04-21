@@ -1,34 +1,36 @@
 ﻿using ConsoleTableExt;
-using CsvHelper;
 using Serilog;
 using STConsole.DataLayer;
 using STConsole.Model;
-using System.Globalization;
 
 namespace STConsole.UserInput;
 
 public static class Menu
 {
-    private readonly static string MenuInputString = "\tPlease Select (1-7)OR 0 to exit. :> ";
+    private const string MenuInputString = "\tPlease Select (1-7)OR 0 to exit. :> ";
+    private const string AppNameString = "Welcome to Sugar Tracker. A blood sugar tracking application.";
 
     public static void GetMenu()
     {
-        Console.WriteLine("Welcome to Sugar Tracker.  A blood sugar tracking application.");
-        string menu = @"
-        
-        Main Menu
-        What would you like to do?
-        
-        Type 0 to Close Sugar Tracker App.
-        Type 1 to View All Readings.
-        Type 2 to Add Reading
-        Type 3 to Delete Reading
-        Type 4 to Update Reading
-        Type 5 to Show Lifetime Report
-        Type 6 to Show 30/60/90 Day Report
-        Type 7 to write reading to a csv file
-        ----------------------------------
-        ";
+        Console.WriteLine(AppNameString);
+        const string menu = """
+                            
+                                    
+                                    Main Menu
+                                    
+                                    What would you like to do?
+                                    ---------------------------------------
+                                    Type 0 to Close Sugar Tracker App.
+                                    Type 1 to View All Readings.
+                                    Type 2 to Add Reading
+                                    Type 3 to Delete Reading
+                                    Type 4 to Update Reading
+                                    Type 5 to Show Lifetime Report
+                                    Type 6 to Show 30/60/90 Day Report
+                                    Type 7 to write reading to a csv file
+                                    --------------------------------------
+                                    
+                            """;
 
         Console.WriteLine(menu);
     }
@@ -36,14 +38,13 @@ public static class Menu
     public static int GetMenuSelection()
     {
         Console.Write(MenuInputString);
-        int option;
 
         while (true)
         {
             ConsoleKeyInfo input = Console.ReadKey(true);
             try
             {
-                option = int.Parse(input.KeyChar.ToString());
+                var option = int.Parse(input.KeyChar.ToString());
                 return option;
             }
             catch (FormatException _)
@@ -66,7 +67,7 @@ public static class Menu
             {
                 DateOnly date = DateOnly.FromDateTime(Input.GetDate());
                 Log.Debug("Blood Sugar Amount => {0}", amount);
-                Log.Debug("Date Added => {date}", date.ToShortDateString());
+                Log.Debug("Date Added => {1}", date.ToShortDateString());
                 Reading reading = new() { Amount = amount, Added = date };
                 if (ReadingController.Insert(reading))
                 {
@@ -75,7 +76,7 @@ public static class Menu
                 }
                 else
                 {
-                    Console.WriteLine("Blood Suagr was not successfully not added.");
+                    Console.WriteLine("Blood Sugar was not successfully not added.");
                     Log.Error("Something happened where the log could not been inserted");
                 }
 
@@ -83,7 +84,7 @@ public static class Menu
                 if (Input.GetYesno())
                     continue;
                 else
-                    break;
+                     break;
             }
             break;
         }
@@ -103,8 +104,8 @@ public static class Menu
             int id = Input.GetID();
             if (id != -1)
             {
-                var sel = ReadingController.Query(id);
-                if (sel is null)
+                var selection = ReadingController.Query(id);
+                if (selection is null)
                 {
                     Console.WriteLine("Please try again. Select an # from the list.");
                     continue;
@@ -112,17 +113,17 @@ public static class Menu
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("The row that we are updating is => {0}", sel);
+                    Console.WriteLine("The row that we are updating is => {0}", selection);
                     bool choice = Input.GetAmountOrDate();
                     Console.WriteLine();
                     // TRUE IS AMOUNT / FALSE IS DATE
                     if (choice)
                     {
                         int updatedAmount = Input.GetAmount();
-                        Console.WriteLine($"Do you wish to change the Old Amount = {sel.Amount} with New Amount = {updatedAmount} (Y/N)?");
+                        Console.WriteLine($"Do you wish to change the Old Amount = {selection.Amount} with New Amount = {updatedAmount} (Y/N)?");
                         if (Input.GetYesno())
                         {
-                            Reading updateReading = new() { Id = sel.Id, Amount = updatedAmount, Added = sel.Added };
+                            Reading updateReading = new() { Id = selection.Id, Amount = updatedAmount, Added = selection.Added };
                             if (ReadingController.UpdateAmount(updateReading))
                             {
                                 Console.WriteLine("Amount has been updated.");
@@ -132,10 +133,10 @@ public static class Menu
                     else
                     {
                         DateOnly updatedDate = DateOnly.FromDateTime(Input.GetDate());
-                        Console.WriteLine($"Do you want to change the old date {sel.Added} with {updatedDate} (Y/N)");
+                        Console.WriteLine($"Do you want to change the old date {selection.Added} with {updatedDate} (Y/N)");
                         if (Input.GetYesno())
                         {
-                            Reading updateReading = new() { Id = sel.Id, Amount = sel.Amount, Added = updatedDate };
+                            Reading updateReading = new() { Id = selection.Id, Amount = selection.Amount, Added = updatedDate };
                             if (ReadingController.UpateDate(updateReading))
                             {
                                 Console.WriteLine("Date has been updated.");
@@ -167,19 +168,19 @@ public static class Menu
             int id = Input.GetID();
             if (id != -1)
             {
-                var sel = ReadingController.Query(id);
-                if (sel is null)
+                var selection = ReadingController.Query(id);
+                if (selection is null)
                 {
                     Console.WriteLine("Please try again. Select an # from the list.");
                     continue;
                 }
-                Console.WriteLine($"Do you wish to delete the following: {sel}  (Y/N)");
+                Console.WriteLine($"Do you wish to delete the following: {selection}  (Y/N)");
                 if (Input.GetYesno())
                 {
-                    if (ReadingController.Delete(sel))
+                    if (ReadingController.Delete(selection))
                     {
                         Console.WriteLine("Row was removed successfully.");
-                        Log.Information("Row {id} was deleted", sel.Id);
+                        Log.Information("RId {Id} was deleted", selection.Id);
                     }
                 }
                 else
